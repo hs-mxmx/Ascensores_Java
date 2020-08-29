@@ -16,8 +16,6 @@ public class Planta {
     private String nombre = "P"; 
     private final Random rand = new Random();
     private int tiempo_llegada_ascensor = 500;
-    private int tiempo_llegada_maximo = 2000;
-    private int tiempo_llegada_minimo = 500;
     private int total_plantas = 21;
     
     public Planta(int numero, Ascensor ascensor){
@@ -32,7 +30,7 @@ public class Planta {
     }
     
     /* Llamar ascensor */
-    public void llamarAscensor(Ascensor ascensor_llamada, String id_persona, Planta planta, Planta planta_destino){
+    public Planta llamarAscensor(Ascensor ascensor_llamada, String id_persona, Planta planta, Planta planta_destino){
         String nombre_planta_destino = planta_destino.get_nombre();
         // Caso en el que coincida la planta con el destino
         while(nombre_planta_destino == null ? nombre == null : nombre_planta_destino.equals(nombre)){
@@ -49,19 +47,7 @@ public class Planta {
                 sleep(tiempo_llegada_ascensor);
             }catch(InterruptedException e){}
         }
-        // Monta en el ascensor
-        try{
-            ascensor = ascensor_llamada;
-            System.out.println("Monta en el ascensor " + ascensor.get_nombre());
-            sleep((rand.nextInt(tiempo_llegada_maximo - tiempo_llegada_minimo)+ 1) + tiempo_llegada_minimo);
-        }catch(InterruptedException e){}
-        ascensor.montarAscensor(id_persona);
-        // Se baja del ascensor
-        try{
-            System.out.println("Baja del ascensor " + ascensor.get_nombre() + " en la planta " + nombre_planta_destino);
-            sleep((rand.nextInt(tiempo_llegada_maximo - tiempo_llegada_minimo)+ 1) + tiempo_llegada_minimo);
-        }catch(InterruptedException e){}
-        ascensor.salirAscensor(id_persona);
+        return planta_destino;
     }
     
     

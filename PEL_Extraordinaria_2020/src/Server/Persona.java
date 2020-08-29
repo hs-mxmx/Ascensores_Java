@@ -9,7 +9,7 @@ public class Persona extends Thread{
     private int tiempo_llegada_minimo = 500;
     private final Ascensor ascensor;
     private final Planta planta;
-    private final Planta planta_destino;
+    private Planta planta_destino;
     
     /* Persona */
     public Persona(int numero, Ascensor ascensor, Planta planta, Planta planta_destino){
@@ -27,7 +27,8 @@ public class Persona extends Thread{
     
     /* Run */
     public void run(){
-        planta.llamarAscensor(ascensor, nombre, planta, planta_destino);
+        planta_destino = planta.llamarAscensor(ascensor, nombre, planta, planta_destino);
+        ascensor.moverAscensor(planta_destino, nombre);
     }
     
 }

@@ -40,6 +40,7 @@ public class PEL_Extraordinaria_2020 {
         ArrayList<Ascensor> ascensores = new ArrayList<>();
         for(int i = 1; i <= total_ascensores; i++){
             ascensores.add(new Ascensor(i));
+            ascensores.get(i-1).start();
         }
         return ascensores;
     }

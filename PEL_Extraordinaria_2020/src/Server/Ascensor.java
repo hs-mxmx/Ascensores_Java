@@ -5,7 +5,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Ascensor{
+public class Ascensor extends Thread{
     /* Variables */
     private final Random rand = new Random();
     private final int ascensor_maximo = 8;
@@ -20,6 +20,9 @@ public class Ascensor{
     private final Condition comprobarAscensor = lock.newCondition();
     private String id_persona;
     private int ascensor_salida;
+    private int tiempo_llegada_maximo = 2000;
+    private int tiempo_llegada_minimo = 500;
+    private Planta planta_destino = null;
     
     /* Ascensor */
     public Ascensor(int numero){
@@ -110,9 +113,38 @@ public class Ascensor{
         }
         return "";
     }
+    
+    /* Mover ascensor */
+    public void moverAscensor(Planta planta_destino, String nombre){
+        // Monta en el ascensor
+        this.planta_destino = planta_destino;
+        this.id_persona = nombre;
+        try{
+            System.out.println("Monta en el ascensor " + nombre);
+            sleep((rand.nextInt(tiempo_llegada_maximo - tiempo_llegada_minimo)+ 1) + tiempo_llegada_minimo);
+        }catch(InterruptedException e){}
+        montarAscensor(id_persona);
+        // Se baja del ascensor
+        try{
+            System.out.println("Baja del ascensor " + nombre + " en la planta " + planta_destino.get_nombre());
+            sleep((rand.nextInt(tiempo_llegada_maximo - tiempo_llegada_minimo)+ 1) + tiempo_llegada_minimo);
+        }catch(InterruptedException e){}
+        salirAscensor(id_persona);
+    }
         
     /* Get Nombre */
     public String get_nombre(){
         return nombre;
+    }
+    
+        /* Run */
+    public void run(){
+        while(true){
+            while(planta_destino == null && id_persona == null){
+                // Espera inactiva durante turnos muertos
+            }
+            System.out.println("Comprobando si tiene que moverse..." + planta_destino.get_nombre() + id_persona);
+            moverAscensor(planta_destino, id_persona);
+        }
     }
 }
