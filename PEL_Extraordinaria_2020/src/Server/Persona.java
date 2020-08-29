@@ -28,7 +28,8 @@ public class Persona extends Thread{
     /* Run */
     public void run(){
         planta_destino = planta.llamarAscensor(ascensor, nombre, planta, planta_destino);
-        ascensor.moverAscensor(planta_destino, nombre);
+        ascensor.cargarPersonas(planta_destino, nombre);
+        ascensor.start();
     }
     
 }

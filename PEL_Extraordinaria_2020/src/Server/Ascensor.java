@@ -116,9 +116,6 @@ public class Ascensor extends Thread{
     
     /* Mover ascensor */
     public void moverAscensor(Planta planta_destino, String nombre){
-        // Monta en el ascensor
-        this.planta_destino = planta_destino;
-        this.id_persona = nombre;
         try{
             System.out.println("Monta en el ascensor " + nombre);
             sleep((rand.nextInt(tiempo_llegada_maximo - tiempo_llegada_minimo)+ 1) + tiempo_llegada_minimo);
@@ -137,14 +134,31 @@ public class Ascensor extends Thread{
         return nombre;
     }
     
+    /* Cargar personas */
+    public void cargarPersonas(Planta planta_destino, String nombre){
+        // Monta en el ascensor
+        this.planta_destino = planta_destino;
+        this.id_persona = nombre;    
+    }
+    
+    /* Descargar personas */
+    public void descargarPersonas(){
+        // Monta en el ascensor
+        this.planta_destino = null;
+        this.id_persona = null;    
+    }
+    
         /* Run */
     public void run(){
         while(true){
-            while(planta_destino == null && id_persona == null){
+            if(planta_destino == null && id_persona == null){
                 // Espera inactiva durante turnos muertos
+                System.out.println("Comprobación de personal vacia..." + planta_destino + id_persona);
+            }else{
+                System.out.println("Comprobación de personal con gente..." + planta_destino.get_nombre() + id_persona); 
+                moverAscensor(planta_destino, id_persona);
+                descargarPersonas();
             }
-            System.out.println("Comprobando si tiene que moverse..." + planta_destino.get_nombre() + id_persona);
-            moverAscensor(planta_destino, id_persona);
         }
     }
 }
