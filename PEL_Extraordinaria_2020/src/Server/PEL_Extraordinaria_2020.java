@@ -11,7 +11,7 @@ public class PEL_Extraordinaria_2020 {
     final int total_operativos = 2;
     final int planta_inicial = 0;
     final int total_plantas = 21;
-    int total_personas = 2;
+    int total_personas = 20;
     ArrayList<Integer> ascensores_operativos_actuales = new ArrayList<>();
     
     
@@ -23,13 +23,17 @@ public class PEL_Extraordinaria_2020 {
         for(int i = 0; i<total_personas; i++){
             int plantas_totales_origen = rand.nextInt(total_plantas);
             int plantas_totales_destino = rand.nextInt(total_plantas);
-            if(i == 1){
+            if(i == 10){
                 System.out.println("CAMBIANDO");
                 ascensores_operativos = inicializarAscensores(ascensores, true);
             }
-            Persona persona = new Persona(i, ascensores_operativos.get(rand.nextInt(total_operativos)), 
-            plantas_creadas.get(plantas_totales_origen),  plantas_creadas.get(plantas_totales_destino));
-            persona.start();
+            System.out.println("TOTAL OPERATIVOS " + total_operativos);
+            try{
+                Persona persona = new Persona(i, ascensores_operativos.get(rand.nextInt(total_operativos)), 
+                plantas_creadas.get(plantas_totales_origen),  plantas_creadas.get(plantas_totales_destino));
+                persona.start();
+            }catch(IndexOutOfBoundsException e){}
+            
         }
     }
 
