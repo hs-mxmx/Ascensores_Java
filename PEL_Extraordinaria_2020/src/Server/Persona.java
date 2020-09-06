@@ -19,6 +19,9 @@ public class Persona extends Thread{
         this.planta_destino = planta_destino;
     }
     
+    /* Ascensores activos */
+
+    
     
     /* Get Nombre */
     public String get_nombre(){
@@ -27,9 +30,10 @@ public class Persona extends Thread{
     
     /* Run */
     public void run(){
-        planta_destino = planta.llamarAscensor(ascensor, nombre, planta, planta_destino);
+        planta_destino = planta.llamarAscensor(ascensor, nombre, planta_destino);
+        System.out.println("PLANTA DESTINO : " + planta_destino.get_nombre());
         ascensor.cargarPersonas(planta_destino, nombre);
-        ascensor.start();
+        ascensor.run();
     }
     
 }

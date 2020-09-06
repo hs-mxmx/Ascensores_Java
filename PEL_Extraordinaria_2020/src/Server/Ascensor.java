@@ -23,11 +23,13 @@ public class Ascensor extends Thread{
     private int tiempo_llegada_maximo = 2000;
     private int tiempo_llegada_minimo = 500;
     private Planta planta_destino = null;
+    private Planta planta_actual;
     
     /* Ascensor */
-    public Ascensor(int numero){
+    public Ascensor(int numero, Planta planta){
         this.nombre = nombre + numero;
         ascensor = new ArrayList<>();
+        this.planta_actual = planta;
     }
     
     /* Montar Ascensor */
@@ -117,21 +119,26 @@ public class Ascensor extends Thread{
     /* Mover ascensor */
     public void moverAscensor(Planta planta_destino, String nombre){
         try{
-            System.out.println("Monta en el ascensor " + nombre);
+            System.out.println("(" + nombre + ") Monta en el ascensor " + this.nombre + " hacia la planta " +  planta_destino.get_nombre());
             sleep((rand.nextInt(tiempo_llegada_maximo - tiempo_llegada_minimo)+ 1) + tiempo_llegada_minimo);
         }catch(InterruptedException e){}
-        montarAscensor(id_persona);
+        montarAscensor(nombre);
         // Se baja del ascensor
         try{
-            System.out.println("Baja del ascensor " + nombre + " en la planta " + planta_destino.get_nombre());
+            System.out.println("(" + nombre + ") Baja del ascensor " + this.nombre + " hacia la planta " +  planta_destino.get_nombre());
             sleep((rand.nextInt(tiempo_llegada_maximo - tiempo_llegada_minimo)+ 1) + tiempo_llegada_minimo);
         }catch(InterruptedException e){}
-        salirAscensor(id_persona);
+        salirAscensor(nombre);
     }
         
     /* Get Nombre */
     public String get_nombre(){
         return nombre;
+    }
+    
+    /* Get Planta Actual */
+    public Planta get_planta(){
+        return planta_actual;
     }
     
     /* Cargar personas */
@@ -150,15 +157,10 @@ public class Ascensor extends Thread{
     
         /* Run */
     public void run(){
-        while(true){
-            if(planta_destino == null && id_persona == null){
-                // Espera inactiva durante turnos muertos
-                System.out.println("Comprobación de personal vacia..." + planta_destino + id_persona);
-            }else{
-                System.out.println("Comprobación de personal con gente..." + planta_destino.get_nombre() + id_persona); 
+            if(planta_destino != null && id_persona != null){
+                // System.out.println("(" + nombre + ") Comprobación de personal con gente... PLANTA: (" + planta_destino.get_nombre() + ") PERSONA: (" + id_persona + ")"); 
                 moverAscensor(planta_destino, id_persona);
                 descargarPersonas();
-            }
         }
     }
 }
